@@ -19,21 +19,33 @@ describe('OpenWeatherMapService', () => {
     expect(service).toBeDefined();
   });
 
+  function validateWeatherData(data: any) {
+    expect(data).toHaveProperty('locationCoords')
+    expect(data).toHaveProperty('locationName')
+    expect(data).toHaveProperty('weatherDescription')
+    expect(data).toHaveProperty('temperatureCurrent')
+    expect(data).toHaveProperty('temperatureLow')
+    expect(data).toHaveProperty('temperatureHigh')
+    expect(data).toHaveProperty('humidity')
+    expect(data).toHaveProperty('windSpeed')
+    expect(data).toHaveProperty('windDirection')
+  }
+
   it('should fetch weather for Nelson, Canada by city name', async () => {
     const weather = await service.fetchWeatherForCity('Nelson, Canada')
-    expect(weather).toHaveProperty('weather')
-    expect(weather.name).toEqual('Nelson')
+    validateWeatherData(weather)
+    expect(weather.locationName).toEqual('Nelson')
   })
 
   it('should fetch weather for Nelson, Canada by lat/long', async () => {
     const weather = await service.fetchWeatherForLatLong('49.48885', '-117.2855')
-    expect(weather).toHaveProperty('weather')
-    expect(weather.name).toEqual('Nelson')
+    validateWeatherData(weather)
+    expect(weather.locationName).toEqual('Nelson')
   })
 
   it('should fetch weather for Beverly Hills by zip code', async () => {
     const weather = await service.fetchWeatherForZipCode('90210')
-    expect(weather).toHaveProperty('weather')
-    expect(weather.name).toEqual('Beverly Hills')
+    validateWeatherData(weather)
+    expect(weather.locationName).toEqual('Beverly Hills')
   })
 });

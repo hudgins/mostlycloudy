@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { OpenWeatherMapModule } from './open-weather-map/open-weather-map.module';
 import { MetricsModule } from './metrics/metrics.module';
+import { CoreModule } from './core/core.module';
 
 @Module({
   imports: [
@@ -24,7 +25,8 @@ import { MetricsModule } from './metrics/metrics.module';
     //   exclude: [{ method: RequestMethod.ALL, path: 'check' }]
     // }),
     OpenWeatherMapModule,
-    MetricsModule
+    MetricsModule,
+    CoreModule
   ],
   controllers: [AppController],
   providers: [AppService],

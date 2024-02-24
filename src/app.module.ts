@@ -4,6 +4,7 @@ import { LoggerModule } from 'nestjs-pino';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { OpenWeatherMapModule } from './open-weather-map/open-weather-map.module';
+import { MetricsModule } from './metrics/metrics.module';
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { OpenWeatherMapModule } from './open-weather-map/open-weather-map.module
     //   forRoutes: [AppController],
     //   exclude: [{ method: RequestMethod.ALL, path: 'check' }]
     // }),
-    OpenWeatherMapModule
+    OpenWeatherMapModule,
+    MetricsModule
   ],
   controllers: [AppController],
   providers: [AppService],

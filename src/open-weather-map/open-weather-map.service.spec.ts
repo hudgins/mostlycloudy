@@ -1,13 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigModule } from '@nestjs/config';
 import { OpenWeatherMapService } from './open-weather-map.service';
+import { MetricsModule } from '../metrics/metrics.module';
 
 describe('OpenWeatherMapService', () => {
   let service: OpenWeatherMapService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModule.forRoot()],
+      imports: [ConfigModule.forRoot(), MetricsModule],
       providers: [OpenWeatherMapService],
     }).compile();
 

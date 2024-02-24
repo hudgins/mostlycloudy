@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
 
 import axios from 'axios'
+import { MetricsService } from '../metrics/metrics.service';
 
 const OPEN_WEATHER_MAP_API = 'https://api.openweathermap.org/data/2.5'
 
@@ -14,7 +15,7 @@ export class OpenWeatherMapService {
   private readonly apiKey: string
   private readonly logger = new Logger(OpenWeatherMapService.name)
 
-  constructor(private configService: ConfigService) {
+  constructor(private configService: ConfigService, private readonly metricsService: MetricsService) {
     this.apiKey = configService.get<string>('API_KEY') || 'none'
   }
 
@@ -33,9 +34,13 @@ export class OpenWeatherMapService {
   private async fetchWeather(params: any): Promise<OpenWeatherData> {
     try {
       const weatherData = await this.makeRequest(params)
-      if (!weatherData?.weather) throw new Error('unexpected response from weather source')
+      this.metricsService.incrementMetric('weather.openweathermap.api.requests')
+      if (!weatherData?.weather) {
+        throw new Error('unexpected response from weather source')
+      }
       return weatherData
     } catch (err) {
+      this.metricsService.incrementMetric('weather.openweathermap.api.failures')
       this.logger.error(`failed to fetch weather data: ${err.message}`)
       throw new Error(`failed to fetch weather from source`)
     }

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Logger } from '@nestjs/common';
 
 import axios from 'axios'
 
@@ -11,6 +12,7 @@ type OwmUnits = 'standard' | 'metric' | 'imperial'
 @Injectable()
 export class OpenWeatherMapService {
   private apiKey: string
+  private readonly logger = new Logger(OpenWeatherMapService.name)
 
   constructor(private configService: ConfigService) {
     this.apiKey = configService.get<string>('API_KEY') || 'none'
@@ -26,6 +28,7 @@ export class OpenWeatherMapService {
       if (!weatherData?.weather) throw new Error('unexpected response from weather source')
       return weatherData
     } catch (err) {
+      this.logger.error(`failed to fetch weather data: ${err.message}`)
       throw new Error(`failed to fetch weather from source`)
     }
   }

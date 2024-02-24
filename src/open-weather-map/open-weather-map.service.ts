@@ -7,24 +7,32 @@ import axios from 'axios'
 const OPEN_WEATHER_MAP_API = 'https://api.openweathermap.org/data/2.5'
 
 type OpenWeatherData = any
-type OwmUnits = 'standard' | 'metric' | 'imperial'
+type TemperatureUnits = 'standard' | 'metric' | 'imperial'
 
 @Injectable()
 export class OpenWeatherMapService {
-  private apiKey: string
+  private readonly apiKey: string
   private readonly logger = new Logger(OpenWeatherMapService.name)
 
   constructor(private configService: ConfigService) {
     this.apiKey = configService.get<string>('API_KEY') || 'none'
   }
 
-  async fetchWeatherForCity(city: string, units: OwmUnits = 'metric'): Promise<OpenWeatherData> {
-    const searchParams = {
-      q: city,
-      units: 'metric'
-    }
+  async fetchWeatherForCity(city: string, units: TemperatureUnits = 'metric'): Promise<OpenWeatherData> {
+    return this.fetchWeather({ q: city, units })
+  }
+
+  async fetchWeatherForZipCode(zipCode: string, units: TemperatureUnits = 'metric'): Promise<OpenWeatherData> {
+    return this.fetchWeather({ zip: zipCode, units })
+  }
+
+  async fetchWeatherForLatLong(latitude: string, longitude: string, units: TemperatureUnits = 'metric'): Promise<OpenWeatherData> {
+    return this.fetchWeather({ lat: latitude, lon: longitude, units })
+  }
+
+  private async fetchWeather(params: any): Promise<OpenWeatherData> {
     try {
-      const weatherData = await this.makeRequest(searchParams)
+      const weatherData = await this.makeRequest(params)
       if (!weatherData?.weather) throw new Error('unexpected response from weather source')
       return weatherData
     } catch (err) {
@@ -34,10 +42,9 @@ export class OpenWeatherMapService {
   }
 
   private async makeRequest(params: any) {
-    const searchParams = new URLSearchParams({ APPID: this.apiKey, ...params })
+    const searchParams = new URLSearchParams({ appid: this.apiKey, ...params })
     const url = `${OPEN_WEATHER_MAP_API}/weather?${searchParams.toString()}`
     const response = await axios.get(url)
     return response.data
   }
-
 }

@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { OpenWeatherMapModule } from './open-weather-map/open-weather-map.module';
 import { MetricsModule } from './metrics/metrics.module';
 import { CoreModule } from './core/core.module';
+import { AlwaysSunnyModule } from './always-sunny/always-sunny.module';
 
 @Module({
   imports: [
@@ -24,9 +25,10 @@ import { CoreModule } from './core/core.module';
     //   forRoutes: [AppController],
     //   exclude: [{ method: RequestMethod.ALL, path: 'check' }]
     // }),
-    OpenWeatherMapModule,
     MetricsModule,
-    CoreModule
+    CoreModule,
+    OpenWeatherMapModule,
+    AlwaysSunnyModule
   ],
   controllers: [AppController],
   providers: [AppService],

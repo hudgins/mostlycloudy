@@ -1,25 +1,24 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
 
 import axios from 'axios'
 import { MetricsService } from '../metrics/metrics.service';
-import { WeatherData } from 'src/core/weather-data/weather-data.interface';
+import { WeatherData, WeatherService, WeatherUnits } from 'src/core/weather-data/weather-data.interface';
 
 const OPEN_WEATHER_MAP_API = 'https://api.openweathermap.org/data/2.5'
 
 type OpenWeatherData = any
-type TemperatureUnits = 'standard' | 'metric' | 'imperial'
 type OpenWeatherMapRequestParams = {
   q?: string
   zip?: string
   lat?: string
   lon?: string
-  units: TemperatureUnits
+  units: WeatherUnits
 }
 
 @Injectable()
-export class OpenWeatherMapService {
+export class OpenWeatherMapService implements WeatherService {
   private readonly apiKey: string
   private readonly logger = new Logger(OpenWeatherMapService.name)
 
@@ -27,41 +26,50 @@ export class OpenWeatherMapService {
     this.apiKey = configService.get<string>('API_KEY') || 'none'
   }
 
-  async fetchWeatherForCity(city: string, units: TemperatureUnits = 'metric'): Promise<WeatherData> {
+  async fetchWeatherForCity(city: string, units: WeatherUnits = 'metric'): Promise<WeatherData> {
     return this.fetchWeather({ q: city, units })
   }
 
-  async fetchWeatherForZipCode(zipCode: string, units: TemperatureUnits = 'metric'): Promise<WeatherData> {
+  async fetchWeatherForZipCode(zipCode: string, units: WeatherUnits = 'metric'): Promise<WeatherData> {
     return this.fetchWeather({ zip: zipCode, units })
   }
 
-  async fetchWeatherForLatLong(latitude: string, longitude: string, units: TemperatureUnits = 'metric'): Promise<WeatherData> {
+  async fetchWeatherForLatLong(latitude: string, longitude: string, units: WeatherUnits = 'metric'): Promise<WeatherData> {
     return this.fetchWeather({ lat: latitude, lon: longitude, units })
   }
 
   private async fetchWeather(params: OpenWeatherMapRequestParams): Promise<WeatherData> {
     try {
+      this.logger.log('weather request:' + JSON.stringify(params))
       const weatherData = await this.makeRequest(params)
       this.metricsService.incrementMetric('weather.openweathermap.api.requests')
       if (!weatherData?.weather) {
+        this.logger.error('unexpected response from OpenWeatherMap', weatherData)
         throw new Error('unexpected response from weather source')
       }
-      return this.standardizeWeatherData(weatherData)
+      return this.standardizeWeatherData(weatherData, params.units)
     } catch (err) {
       this.metricsService.incrementMetric('weather.openweathermap.api.failures')
       this.logger.error(`failed to fetch weather data: ${err.message}`)
-      throw new Error(`failed to fetch weather from source`)
+      throw err
     }
   }
 
   private async makeRequest(params: OpenWeatherMapRequestParams) {
     const searchParams = new URLSearchParams({ appid: this.apiKey, ...params })
     const url = `${OPEN_WEATHER_MAP_API}/weather?${searchParams.toString()}`
-    const response = await axios.get(url)
-    return response.data
+    this.logger.log('request: ' + url)
+    try {
+      const response = await axios.get(url)
+      return response.data
+    } catch (err) {
+      if (err.response?.status === 400) throw new BadRequestException('invalid request')
+      if (err.response?.status === 404) throw new NotFoundException('weather data not found')
+      throw err
+    }
   }
 
-  private standardizeWeatherData(openWeatherData: OpenWeatherData): WeatherData {
+  private standardizeWeatherData(openWeatherData: OpenWeatherData, units: WeatherUnits): WeatherData {
     return {
       locationName: openWeatherData.name,
       locationCoords: { lat: openWeatherData.coord.lat, long: openWeatherData.coord.lon },
@@ -71,7 +79,9 @@ export class OpenWeatherMapService {
       temperatureHigh: openWeatherData.main.temp_max,
       windSpeed: openWeatherData.wind.speed,
       windDirection: openWeatherData.wind.deg,
-      humidity: openWeatherData.main.humidity
+      humidity: openWeatherData.main.humidity,
+      units,
+      source: 'openweathermap'
     }
   }
 }

@@ -1,12 +1,25 @@
-import { Controller, Get } from '@nestjs/common';
+import { BadRequestException, Controller, Get, Query } from '@nestjs/common';
 import { AppService } from './app.service';
+import { WeatherData, WeatherSource, WeatherUnits } from './core/weather-data/weather-data.interface';
+
+type WeatherQuery = {
+  city?: string
+  zip?: string
+  lat?: string
+  long?: string
+  units?: WeatherUnits
+  source?: WeatherSource
+}
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Get('v1/current')
+  async getWeather(@Query() query: WeatherQuery): Promise<WeatherData> {
+    if (query.city) return this.appService.getWeatherForCity(query.city, query.units, query.source)
+    if (query.zip) return this.appService.getWeatherForZipCode(query.zip, query.units, query.source)
+    if (query.lat && query.long) return this.appService.getWeatherForLatLong(query.lat, query.long, query.units, query.source)
+    throw new BadRequestException('invalid request: please provide city, zip, or lat/long pair')
   }
 }

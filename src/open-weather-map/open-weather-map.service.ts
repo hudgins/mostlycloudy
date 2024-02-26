@@ -4,7 +4,7 @@ import { Logger } from '@nestjs/common';
 
 import axios from 'axios'
 import { MetricsService } from '../metrics/metrics.service';
-import { WeatherData, WeatherService, WeatherUnits } from 'src/core/weather-data/weather-data.interface';
+import { WeatherData, WeatherService, WeatherSource, WeatherUnits } from '../core/weather-data/weather-data.interface';
 
 const OPEN_WEATHER_MAP_API = 'https://api.openweathermap.org/data/2.5'
 
@@ -26,15 +26,15 @@ export class OpenWeatherMapService implements WeatherService {
     this.apiKey = configService.get<string>('API_KEY') || 'none'
   }
 
-  async fetchWeatherForCity(city: string, units: WeatherUnits = 'metric'): Promise<WeatherData> {
+  async fetchWeatherForCity(city: string, units: WeatherUnits = WeatherUnits.Metric): Promise<WeatherData> {
     return this.fetchWeather({ q: city, units })
   }
 
-  async fetchWeatherForZipCode(zipCode: string, units: WeatherUnits = 'metric'): Promise<WeatherData> {
+  async fetchWeatherForZipCode(zipCode: string, units: WeatherUnits = WeatherUnits.Metric): Promise<WeatherData> {
     return this.fetchWeather({ zip: zipCode, units })
   }
 
-  async fetchWeatherForLatLong(latitude: string, longitude: string, units: WeatherUnits = 'metric'): Promise<WeatherData> {
+  async fetchWeatherForLatLong(latitude: string, longitude: string, units: WeatherUnits = WeatherUnits.Metric): Promise<WeatherData> {
     return this.fetchWeather({ lat: latitude, lon: longitude, units })
   }
 
@@ -81,7 +81,7 @@ export class OpenWeatherMapService implements WeatherService {
       windDirection: openWeatherData.wind.deg,
       humidity: openWeatherData.main.humidity,
       units,
-      source: 'openweathermap'
+      source: WeatherSource.OpenWeatherMap
     }
   }
 }

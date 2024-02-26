@@ -12,8 +12,15 @@ export interface WeatherData {
   source: WeatherSource
 }
 
-export type WeatherSource = 'openweathermap' | 'alwayssunny'
-export type WeatherUnits = 'standard' | 'metric' | 'imperial'
+export enum WeatherSource {
+  OpenWeatherMap = 'openweathermap',
+  AlwaysSunny = 'alwayssunny'
+}
+export enum WeatherUnits {
+  Standard = 'standard',
+  Metric = 'metric',
+  Imperial = 'imperial'
+}
 
 export interface WeatherService {
   fetchWeatherForCity(city: string, units: WeatherUnits): Promise<WeatherData>

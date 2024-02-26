@@ -8,19 +8,19 @@ export class AppService {
   private readonly weatherServices: Map<WeatherSource, WeatherService> = new Map<WeatherSource, WeatherService>();
 
   constructor(openWeatherMapService: OpenWeatherMapService, alwaysSunnyService: AlwaysSunnyService) {
-    this.weatherServices.set('openweathermap', openWeatherMapService)
-    this.weatherServices.set('alwayssunny', alwaysSunnyService)
+    this.weatherServices.set(WeatherSource.OpenWeatherMap, openWeatherMapService)
+    this.weatherServices.set(WeatherSource.AlwaysSunny, alwaysSunnyService)
   }
 
-  async getWeatherForCity(city: string, units: WeatherUnits = 'metric', source: WeatherSource = 'openweathermap'): Promise<WeatherData> {
+  async getWeatherForCity(city: string, units: WeatherUnits = WeatherUnits.Metric, source: WeatherSource = WeatherSource.OpenWeatherMap): Promise<WeatherData> {
     return this.getWeatherService(source).fetchWeatherForCity(city, units)
   }
 
-  async getWeatherForZipCode(zip: string, units: WeatherUnits = 'metric', source: WeatherSource = 'openweathermap'): Promise<WeatherData> {
+  async getWeatherForZipCode(zip: string, units: WeatherUnits = WeatherUnits.Metric, source: WeatherSource = WeatherSource.OpenWeatherMap): Promise<WeatherData> {
     return this.getWeatherService(source).fetchWeatherForZipCode(zip, units)
   }
 
-  async getWeatherForLatLong(latitude: string, longitude: string, units: WeatherUnits = 'metric', source: WeatherSource = 'openweathermap'): Promise<WeatherData> {
+  async getWeatherForLatLong(latitude: string, longitude: string, units: WeatherUnits = WeatherUnits.Metric, source: WeatherSource = WeatherSource.OpenWeatherMap): Promise<WeatherData> {
     return this.getWeatherService(source).fetchWeatherForLatLong(latitude, longitude, units)
   }
 

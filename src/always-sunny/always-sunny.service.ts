@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 
 import { MetricsService } from '../metrics/metrics.service';
-import { WeatherData, WeatherService, WeatherUnits } from 'src/core/weather-data/weather-data.interface';
+import { WeatherData, WeatherService, WeatherSource, WeatherUnits } from '../core/weather-data/weather-data.interface';
 
 @Injectable()
 export class AlwaysSunnyService implements WeatherService {
@@ -11,15 +11,15 @@ export class AlwaysSunnyService implements WeatherService {
   constructor(private readonly metricsService: MetricsService) {
   }
 
-  async fetchWeatherForCity(city: string, units: WeatherUnits = 'metric'): Promise<WeatherData> {
+  async fetchWeatherForCity(city: string, units: WeatherUnits = WeatherUnits.Metric): Promise<WeatherData> {
     return this.fetchWeather({ city, units })
   }
 
-  async fetchWeatherForZipCode(zipCode: string, units: WeatherUnits = 'metric'): Promise<WeatherData> {
+  async fetchWeatherForZipCode(zipCode: string, units: WeatherUnits = WeatherUnits.Metric): Promise<WeatherData> {
     return this.fetchWeather({ zipCode, units })
   }
 
-  async fetchWeatherForLatLong(latitude: string, longitude: string, units: WeatherUnits = 'metric'): Promise<WeatherData> {
+  async fetchWeatherForLatLong(latitude: string, longitude: string, units: WeatherUnits = WeatherUnits.Metric): Promise<WeatherData> {
     return this.fetchWeather({ latitude, longitude, units })
   }
 
@@ -36,17 +36,17 @@ export class AlwaysSunnyService implements WeatherService {
       windDirection: 180,
       humidity: 40,
       units: params.units,
-      source: 'alwayssunny'
+      source: WeatherSource.AlwaysSunny
     }
   }
 
-  private convertTemp(temp: number, units: WeatherUnits = 'metric'): number {
+  private convertTemp(temp: number, units: WeatherUnits = WeatherUnits.Metric): number {
     if (units == 'imperial') return 9 / 5 * temp + 32
     if (units == 'standard') return temp + 273.15
     return temp
   }
 
-  private convertSpeed(speed: number, units: WeatherUnits = 'metric'): number {
+  private convertSpeed(speed: number, units: WeatherUnits = WeatherUnits.Metric): number {
     if (units == 'imperial') return speed * 0.621371
     return speed
   }

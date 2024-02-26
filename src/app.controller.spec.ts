@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { OpenWeatherMapModule } from './open-weather-map/open-weather-map.module';
 import { AlwaysSunnyModule } from './always-sunny/always-sunny.module';
+import { WeatherSource } from './core/weather-data/weather-data.interface';
 // import { ConsoleLogger } from '@nestjs/common';
 
 describe('AppController', () => {
@@ -37,13 +38,13 @@ describe('AppController', () => {
     })
 
     it('should request weather for Nelson, Canada by city name from openweathermap', async () => {
-      const weather = await appController.getWeather({ city: 'Nelson, Canada', source: 'openweathermap' })
+      const weather = await appController.getWeather({ city: 'Nelson, Canada', source: WeatherSource.OpenWeatherMap })
       expect(weather.locationName).toEqual('Nelson')
       expect(weather.source).toEqual('openweathermap')
     })
 
     it('should request weather for Nelson, Canada by city name from alwayssunny', async () => {
-      const weather = await appController.getWeather({ city: 'Nelson, Canada', source: 'alwayssunny' })
+      const weather = await appController.getWeather({ city: 'Nelson, Canada', source: WeatherSource.AlwaysSunny })
       expect(weather.locationName).toEqual('Nelson, Canada')
       expect(weather.source).toEqual('alwayssunny')
     })

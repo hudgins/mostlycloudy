@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { WeatherData, WeatherSource, WeatherService, WeatherUnits } from './core/weather-data/weather-data.interface';
-import { OpenWeatherMapService } from './open-weather-map/open-weather-map.service';
-import { AlwaysSunnyService } from './always-sunny/always-sunny.service';
+import { WeatherData, WeatherSource, WeatherService, WeatherUnits } from '../core/weather-data/weather-data.interface';
+import { OpenWeatherMapService } from '../open-weather-map/open-weather-map.service';
+import { AlwaysSunnyService } from '../always-sunny/always-sunny.service';
 
 @Injectable()
 export class AppService {

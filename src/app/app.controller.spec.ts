@@ -2,9 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { OpenWeatherMapModule } from './open-weather-map/open-weather-map.module';
-import { AlwaysSunnyModule } from './always-sunny/always-sunny.module';
-import { WeatherSource } from './core/weather-data/weather-data.interface';
+import { OpenWeatherMapModule } from '../open-weather-map/open-weather-map.module';
+import { AlwaysSunnyModule } from '../always-sunny/always-sunny.module';
+import { WeatherSource } from '../core/weather-data/weather-data.interface';
 // import { ConsoleLogger } from '@nestjs/common';
 
 describe('AppController', () => {

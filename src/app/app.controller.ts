@@ -1,7 +1,7 @@
 import { BadRequestException, Controller, Get, Query } from '@nestjs/common';
 import { AppService } from './app.service';
-import { WeatherData, WeatherSource, WeatherUnits } from './core/weather-data/weather-data.interface';
-import { CurrentConditionsRequestDto } from './current-conditions-dto';
+import { WeatherData } from '../core/weather-data/weather-data.interface';
+import { CurrentConditionsRequestDto } from './current-conditions-request.dto';
 
 @Controller()
 export class AppController {

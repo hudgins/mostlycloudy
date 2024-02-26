@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 
-import { MetricsService } from '../metrics/metrics.service';
-import { WeatherData, WeatherService, WeatherSource, WeatherUnits } from '../core/weather-data/weather-data.interface';
+import { MetricsService } from '../../metrics/metrics.service';
+import { WeatherData, WeatherService, WeatherSource, WeatherUnits } from '../../core/weather-data/weather-data.interface';
 
 @Injectable()
 export class AlwaysSunnyService implements WeatherService {

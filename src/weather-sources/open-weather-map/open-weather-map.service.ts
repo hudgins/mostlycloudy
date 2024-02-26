@@ -3,8 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
 
 import axios from 'axios'
-import { MetricsService } from '../metrics/metrics.service';
-import { WeatherData, WeatherService, WeatherSource, WeatherUnits } from '../core/weather-data/weather-data.interface';
+import { MetricsService } from '../../metrics/metrics.service';
+import { WeatherData, WeatherService, WeatherSource, WeatherUnits } from '../../core/weather-data/weather-data.interface';
 
 const OPEN_WEATHER_MAP_API = 'https://api.openweathermap.org/data/2.5'
 

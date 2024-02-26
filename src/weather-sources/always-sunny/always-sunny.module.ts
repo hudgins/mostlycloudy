@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AlwaysSunnyService } from './always-sunny.service';
-import { MetricsModule } from '../metrics/metrics.module';
+import { MetricsModule } from '../../metrics/metrics.module';
 
 @Module({
   imports: [MetricsModule],

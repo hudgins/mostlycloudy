@@ -1,18 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ConfigModule } from '@nestjs/config';
-import { OpenWeatherMapService } from './open-weather-map.service';
-import { MetricsModule } from '../metrics/metrics.module';
+import { AlwaysSunnyService } from './always-sunny.service';
+import { MetricsModule } from '../../metrics/metrics.module';
 
-describe('OpenWeatherMapService', () => {
-  let service: OpenWeatherMapService;
+describe('AlwaysSunnyService', () => {
+  let service: AlwaysSunnyService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModule.forRoot(), MetricsModule],
-      providers: [OpenWeatherMapService],
+      imports: [MetricsModule],
+      providers: [AlwaysSunnyService],
     }).compile();
 
-    service = module.get<OpenWeatherMapService>(OpenWeatherMapService);
+    service = module.get<AlwaysSunnyService>(AlwaysSunnyService);
   });
 
   it('should be defined', () => {
@@ -34,18 +33,18 @@ describe('OpenWeatherMapService', () => {
   it('should fetch weather for Nelson, Canada by city name', async () => {
     const weather = await service.fetchWeatherForCity('Nelson, Canada')
     validateWeatherData(weather)
-    expect(weather.locationName).toEqual('Nelson')
+    expect(weather.locationName).toEqual('Nelson, Canada')
   })
 
-  it('should fetch weather for Nelson, Canada by lat/long', async () => {
+  it('should fetch weather for Philadelphia by lat/long', async () => {
     const weather = await service.fetchWeatherForLatLong('49.48885', '-117.2855')
     validateWeatherData(weather)
-    expect(weather.locationName).toEqual('Nelson')
+    expect(weather.locationName).toEqual('Philadelphia')
   })
 
-  it('should fetch weather for Beverly Hills by zip code', async () => {
+  it('should fetch weather for Philadelphia by zip code', async () => {
     const weather = await service.fetchWeatherForZipCode('90210')
     validateWeatherData(weather)
-    expect(weather.locationName).toEqual('Beverly Hills')
+    expect(weather.locationName).toEqual('Philadelphia')
   })
 });

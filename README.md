@@ -24,7 +24,7 @@ weather sources is mapped to a common response format before returning data to t
 unnecessary calls made to metered third-party APIs.
 3. **Rate-limiting** -- requests are rate-limited (30/min) to prevent abuse and subsequent
 costs for third-party APIs.
-4. **Configuration** -- API keys, etc. are read from environment variables.
+4. **Configuration** -- API keys, etc. are read from environment variables and accessed through a config service.
 5. **HealthCheck** -- two health-related endpoints are provided, one for a basic ping by
 load balancers or uptime monitors, the other for detailed status of the service functionality.
 6. **Metrics** -- a basic in-memory metrics service is included, which services use to
@@ -41,7 +41,7 @@ report their usage.
 - [pino](https://getpino.io) for logging
 - [axios](https://axios-http.com) for http requests
 - [lint-staged](https://github.com/lint-staged/lint-staged#readme) to lint and format staged changes on pre-commit hook
-- [commitlint](https://commitlint.js.org) to enforce a common commit message format (future use with release-please)
+- [commitlint](https://commitlint.js.org) to enforce a common commit message format (future use with [release-please](https://github.com/googleapis/release-please#readme))
 
 ## Installation
 

@@ -14,7 +14,6 @@ import { APP_GUARD } from '@nestjs/core';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    // LoggerModule.forRoot(),
     LoggerModule.forRoot({
       pinoHttp: {
         name: 'mostlycloudy',

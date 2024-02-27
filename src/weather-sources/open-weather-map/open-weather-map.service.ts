@@ -80,7 +80,7 @@ export class OpenWeatherMapService implements WeatherService {
     params: OpenWeatherMapRequestParams,
   ): Promise<WeatherData> {
     try {
-      this.logger.log('weather request:' + JSON.stringify(params));
+      this.logger.log({ msg: 'weather source request', payload: params });
       const weatherData = await this.makeRequest(params);
       this.metricsService.incrementMetric(
         'weather.openweathermap.api.requests',
@@ -105,7 +105,7 @@ export class OpenWeatherMapService implements WeatherService {
   private async makeRequest(params: OpenWeatherMapRequestParams) {
     const searchParams = new URLSearchParams({ appid: this.apiKey, ...params });
     const url = `${OPEN_WEATHER_MAP_API}/weather?${searchParams.toString()}`;
-    this.logger.log('request: ' + url);
+    this.logger.log({ msg: 'outbound request', payload: params });
     try {
       const response = await axios.get(url);
       return response.data;

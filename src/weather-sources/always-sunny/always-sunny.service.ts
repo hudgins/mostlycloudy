@@ -47,7 +47,7 @@ export class AlwaysSunnyService implements WeatherService {
   }
 
   private async fetchWeather(params: any): Promise<WeatherData> {
-    this.logger.log('weather request:' + JSON.stringify(params));
+    this.logger.log({ msg: 'weather source request', payload: params });
     return {
       locationName: params.city || 'Philadelphia',
       locationCoords: {

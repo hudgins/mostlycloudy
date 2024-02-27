@@ -3,12 +3,21 @@ import { Logger } from '@nestjs/common';
 
 import { MetricsService } from '../../metrics/metrics.service';
 import { WeatherData, WeatherService, WeatherSource, WeatherUnits } from '../../core/weather-data/weather-data.interface';
+import { ServiceHealth } from '../../core/service/service.interface';
 
 @Injectable()
 export class AlwaysSunnyService implements WeatherService {
   private readonly logger = new Logger(AlwaysSunnyService.name)
 
   constructor(private readonly metricsService: MetricsService) {
+  }
+
+  getName(): WeatherSource.AlwaysSunny {
+    return WeatherSource.AlwaysSunny
+  }
+
+  getHealth(): Promise<ServiceHealth> {
+    return Promise.resolve(ServiceHealth.Normal)
   }
 
   async fetchWeatherForCity(city: string, units: WeatherUnits = WeatherUnits.Metric): Promise<WeatherData> {

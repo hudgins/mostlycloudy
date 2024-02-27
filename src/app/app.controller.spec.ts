@@ -2,9 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { OpenWeatherMapModule } from '../weather-sources/open-weather-map/open-weather-map.module';
-import { AlwaysSunnyModule } from '../weather-sources/always-sunny/always-sunny.module';
 import { WeatherSource } from '../core/weather-data/weather-data.interface';
+import { WeatherSourcesRegistryModule } from '../weather-sources/weather-sources-registry.module';
 // import { ConsoleLogger } from '@nestjs/common';
 
 describe('AppController', () => {
@@ -12,7 +11,7 @@ describe('AppController', () => {
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModule.forRoot(), OpenWeatherMapModule, AlwaysSunnyModule],
+      imports: [ConfigModule.forRoot(), WeatherSourcesRegistryModule],
       controllers: [AppController],
       providers: [AppService],
     }).compile();

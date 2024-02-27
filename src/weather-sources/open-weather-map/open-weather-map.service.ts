@@ -5,6 +5,7 @@ import { Logger } from '@nestjs/common';
 import axios from 'axios'
 import { MetricsService } from '../../metrics/metrics.service';
 import { WeatherData, WeatherService, WeatherSource, WeatherUnits } from '../../core/weather-data/weather-data.interface';
+import { ServiceHealth } from '../../core/service/service.interface';
 
 const OPEN_WEATHER_MAP_API = 'https://api.openweathermap.org/data/2.5'
 
@@ -23,7 +24,18 @@ export class OpenWeatherMapService implements WeatherService {
   private readonly logger = new Logger(OpenWeatherMapService.name)
 
   constructor(private configService: ConfigService, private readonly metricsService: MetricsService) {
-    this.apiKey = configService.get<string>('API_KEY') || 'none'
+    this.apiKey = configService.get<string>('API_KEY')
+    if (!this.apiKey) throw new Error('missing required API_KEY variable in environment')
+  }
+
+  getName(): WeatherSource.OpenWeatherMap {
+    return WeatherSource.OpenWeatherMap
+  }
+
+  async getHealth(): Promise<ServiceHealth> {
+    const result = await this.fetchWeather({ q: 'Nelson, CA', units: WeatherUnits.Metric })
+    if (result.locationName === 'Nelson') return ServiceHealth.Normal
+    return ServiceHealth.Degraded
   }
 
   async fetchWeatherForCity(city: string, units: WeatherUnits = WeatherUnits.Metric): Promise<WeatherData> {

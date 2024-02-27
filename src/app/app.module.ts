@@ -3,10 +3,10 @@ import { ConfigModule } from '@nestjs/config'
 import { LoggerModule } from 'nestjs-pino';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { OpenWeatherMapModule } from '../weather-sources/open-weather-map/open-weather-map.module';
 import { MetricsModule } from '../metrics/metrics.module';
 import { CoreModule } from '../core/core.module';
-import { AlwaysSunnyModule } from '../weather-sources/always-sunny/always-sunny.module';
+import { WeatherSourcesRegistryModule } from 'src/weather-sources/weather-sources-registry.module';
+import { HealthCheckModule } from 'src/health-check/health-check.module';
 
 @Module({
   imports: [
@@ -27,8 +27,8 @@ import { AlwaysSunnyModule } from '../weather-sources/always-sunny/always-sunny.
     // }),
     MetricsModule,
     CoreModule,
-    OpenWeatherMapModule,
-    AlwaysSunnyModule
+    WeatherSourcesRegistryModule,
+    HealthCheckModule
   ],
   controllers: [AppController],
   providers: [AppService],

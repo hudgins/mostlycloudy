@@ -1,3 +1,6 @@
+import { WeatherSourcesRegistryService } from "src/weather-sources/weather-sources-registry.service"
+import { Service } from "../service/service.interface"
+
 export interface WeatherData {
   locationCoords: { lat: number, long: number }
   locationName: string
@@ -22,7 +25,7 @@ export enum WeatherUnits {
   Imperial = 'imperial'
 }
 
-export interface WeatherService {
+export interface WeatherService extends Service {
   fetchWeatherForCity(city: string, units: WeatherUnits): Promise<WeatherData>
   fetchWeatherForZipCode(zipCode: string, units: WeatherUnits): Promise<WeatherData>
   fetchWeatherForLatLong(latitude: string, longitude: string, units: WeatherUnits): Promise<WeatherData>

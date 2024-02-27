@@ -64,7 +64,7 @@ describe('AppController (e2e)', () => {
 
   // current conditions API
 
-  it('/v1/current (GET)', async () => {
+  it('/v1/current (GET) - by city', async () => {
     const expected = {
       locationName: 'Nelson',
       locationCoords: {
@@ -86,6 +86,61 @@ describe('AppController (e2e)', () => {
       .get('/v1/current?city=Nelson,CA&source=openweathermap&units=imperial')
       .set('Accept', 'application/json');
     expect(response.body).toContainKeys(Object.keys(expected));
+    expect(response.body.locationName).toEqual('Nelson');
+    expect(response.body.source).toEqual('openweathermap');
+  }, 15_000);
+
+  it('/v1/current (GET) - by zip', async () => {
+    const expected = {
+      locationName: 'Beverly Hills',
+      locationCoords: {
+        lat: 34.0901,
+        long: -118.4065,
+      },
+      weatherDescription: 'overcast clouds',
+      temperatureCurrent: 12.28,
+      temperatureLow: 10.79,
+      temperatureHigh: 13.97,
+      windSpeed: 1.54,
+      windDirection: 200,
+      humidity: 90,
+      units: 'metric',
+      source: 'openweathermap',
+    };
+
+    const response = await request(app.getHttpServer())
+      .get('/v1/current?zip=90210&source=openweathermap&units=imperial')
+      .set('Accept', 'application/json');
+    expect(response.body).toContainKeys(Object.keys(expected));
+    expect(response.body.locationName).toEqual('Beverly Hills');
+    expect(response.body.source).toEqual('openweathermap');
+  }, 15_000);
+
+  it('/v1/current (GET) - by lat/long', async () => {
+    const expected = {
+      locationName: 'Beverly Hills',
+      locationCoords: {
+        lat: 34.0901,
+        long: -118.4065,
+      },
+      weatherDescription: 'overcast clouds',
+      temperatureCurrent: 12.28,
+      temperatureLow: 10.79,
+      temperatureHigh: 13.97,
+      windSpeed: 1.54,
+      windDirection: 200,
+      humidity: 90,
+      units: 'metric',
+      source: 'openweathermap',
+    };
+
+    const response = await request(app.getHttpServer())
+      .get(
+        '/v1/current?lat=34.0901&long=-118.4065&source=openweathermap&units=imperial',
+      )
+      .set('Accept', 'application/json');
+    expect(response.body).toContainKeys(Object.keys(expected));
+    expect(response.body.locationName).toEqual('Beverly Hills');
     expect(response.body.source).toEqual('openweathermap');
   }, 15_000);
 

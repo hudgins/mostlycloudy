@@ -5,6 +5,7 @@ import {
   Query,
   UseInterceptors,
 } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import { AppService } from './app.service';
 import { WeatherData } from '../core/weather-data/weather-data.interface';
 import { CurrentConditionsRequestDto } from './current-conditions-request.dto';
@@ -17,6 +18,7 @@ export class AppController {
   @Get('v1/current')
   @CacheTTL(5 * 60 * 1000) // 5 mins
   @UseInterceptors(CacheInterceptor)
+  @Throttle({ default: { limit: 30, ttl: 60000 } })
   async getWeather(
     @Query() query: CurrentConditionsRequestDto,
   ): Promise<WeatherData> {

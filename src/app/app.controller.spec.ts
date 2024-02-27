@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigModule } from '@nestjs/config';
 import { CacheModule } from '@nestjs/cache-manager';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { WeatherSource } from '../core/weather-data/weather-data.interface';
@@ -14,6 +15,7 @@ describe('AppController', () => {
     const app: TestingModule = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot(),
+        ThrottlerModule.forRoot(),
         CacheModule.register(),
         WeatherSourcesRegistryModule,
       ],

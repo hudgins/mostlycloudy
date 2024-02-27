@@ -6,7 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { WeatherSource } from '../core/weather-data/weather-data.interface';
 import { WeatherSourcesRegistryModule } from '../weather-sources/weather-sources-registry.module';
-// import { ConsoleLogger } from '@nestjs/common';
+import { mockWeatherHttpRequest } from '../../test/utils/openweathermap';
 
 describe('AppController', () => {
   let appController: AppController;
@@ -22,13 +22,14 @@ describe('AppController', () => {
       controllers: [AppController],
       providers: [AppService],
     }).compile();
-    // }).setLogger(new ConsoleLogger()).compile();
 
     appController = app.get<AppController>(AppController);
   });
 
   describe('weather', () => {
     it('should request weather for Nelson, Canada by city name', async () => {
+      mockWeatherHttpRequest();
+
       const weather = await appController.getWeather({
         city: 'Nelson, Canada',
       });
@@ -36,6 +37,8 @@ describe('AppController', () => {
     });
 
     it('should request weather for Nelson, Canada by lat long', async () => {
+      mockWeatherHttpRequest();
+
       const weather = await appController.getWeather({
         lat: '49.48885',
         long: '-117.2855',
@@ -44,11 +47,15 @@ describe('AppController', () => {
     });
 
     it('should request weather for Beverly Hills by zip code', async () => {
+      mockWeatherHttpRequest({ name: 'Beverly Hills' });
+
       const weather = await appController.getWeather({ zip: '90210' });
       expect(weather.locationName).toEqual('Beverly Hills');
     });
 
     it('should request weather for Nelson, Canada by city name from openweathermap', async () => {
+      mockWeatherHttpRequest();
+
       const weather = await appController.getWeather({
         city: 'Nelson, Canada',
         source: WeatherSource.OpenWeatherMap,
@@ -58,6 +65,8 @@ describe('AppController', () => {
     });
 
     it('should request weather for Nelson, Canada by city name from alwayssunny', async () => {
+      mockWeatherHttpRequest();
+
       const weather = await appController.getWeather({
         city: 'Nelson, Canada',
         source: WeatherSource.AlwaysSunny,

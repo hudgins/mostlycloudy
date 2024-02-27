@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigModule } from '@nestjs/config';
 import { OpenWeatherMapService } from './open-weather-map.service';
 import { MetricsModule } from '../../metrics/metrics.module';
+import { mockWeatherHttpRequest } from '../../../test/utils/openweathermap';
 
 describe('OpenWeatherMapService', () => {
   let service: OpenWeatherMapService;
@@ -32,12 +33,14 @@ describe('OpenWeatherMapService', () => {
   }
 
   it('should fetch weather for Nelson, Canada by city name', async () => {
+    mockWeatherHttpRequest();
     const weather = await service.fetchWeatherForCity('Nelson, Canada');
     validateWeatherData(weather);
     expect(weather.locationName).toEqual('Nelson');
   });
 
   it('should fetch weather for Nelson, Canada by lat/long', async () => {
+    mockWeatherHttpRequest();
     const weather = await service.fetchWeatherForLatLong(
       '49.48885',
       '-117.2855',
@@ -47,6 +50,7 @@ describe('OpenWeatherMapService', () => {
   });
 
   it('should fetch weather for Beverly Hills by zip code', async () => {
+    mockWeatherHttpRequest({ name: 'Beverly Hills' });
     const weather = await service.fetchWeatherForZipCode('90210');
     validateWeatherData(weather);
     expect(weather.locationName).toEqual('Beverly Hills');

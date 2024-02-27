@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { HealthCheckController } from './health-check.controller';
 import { WeatherSourcesRegistryModule } from '../weather-sources/weather-sources-registry.module';
 import { ConfigModule } from '@nestjs/config';
+import { mockWeatherHttpRequest } from '../../test/utils/openweathermap';
 
 describe('HealthCheckController', () => {
   let controller: HealthCheckController;
@@ -24,6 +25,7 @@ describe('HealthCheckController', () => {
   });
 
   it('should return status for each weather source', async () => {
+    mockWeatherHttpRequest();
     const statuses = await controller.getDetailedHealth();
     expect(statuses).toHaveProperty('status');
     expect(statuses).toHaveProperty('sources');

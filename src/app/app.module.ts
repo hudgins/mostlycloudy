@@ -1,5 +1,6 @@
-import { Module, RequestMethod } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { CacheModule } from '@nestjs/cache-manager';
 import { LoggerModule } from 'nestjs-pino';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -25,6 +26,7 @@ import { HealthCheckModule } from 'src/health-check/health-check.module';
     //   forRoutes: [AppController],
     //   exclude: [{ method: RequestMethod.ALL, path: 'check' }]
     // }),
+    CacheModule.register(),
     MetricsModule,
     CoreModule,
     WeatherSourcesRegistryModule,

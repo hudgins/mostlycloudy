@@ -1,13 +1,22 @@
-import { BadRequestException, Controller, Get, Query } from '@nestjs/common';
+import {
+  BadRequestException,
+  Controller,
+  Get,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import { WeatherData } from '../core/weather-data/weather-data.interface';
 import { CurrentConditionsRequestDto } from './current-conditions-request.dto';
+import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get('v1/current')
+  @CacheTTL(5 * 60 * 1000) // 5 mins
+  @UseInterceptors(CacheInterceptor)
   async getWeather(
     @Query() query: CurrentConditionsRequestDto,
   ): Promise<WeatherData> {

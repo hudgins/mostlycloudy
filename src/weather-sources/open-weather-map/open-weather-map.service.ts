@@ -33,7 +33,7 @@ export class OpenWeatherMapService implements WeatherService {
   private readonly logger = new Logger(OpenWeatherMapService.name);
 
   constructor(
-    private configService: ConfigService,
+    configService: ConfigService,
     private readonly metricsService: MetricsService,
   ) {
     this.apiKey = configService.get<string>('API_KEY');

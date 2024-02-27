@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigModule } from '@nestjs/config';
+import { CacheModule } from '@nestjs/cache-manager';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { WeatherSource } from '../core/weather-data/weather-data.interface';
@@ -11,7 +12,11 @@ describe('AppController', () => {
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModule.forRoot(), WeatherSourcesRegistryModule],
+      imports: [
+        ConfigModule.forRoot(),
+        CacheModule.register(),
+        WeatherSourcesRegistryModule,
+      ],
       controllers: [AppController],
       providers: [AppService],
     }).compile();

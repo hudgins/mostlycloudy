@@ -7,8 +7,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MetricsModule } from '../metrics/metrics.module';
 import { CoreModule } from '../core/core.module';
-import { WeatherSourcesRegistryModule } from 'src/weather-sources/weather-sources-registry.module';
-import { HealthCheckModule } from 'src/health-check/health-check.module';
+import { WeatherSourcesRegistryModule } from '../weather-sources/weather-sources-registry.module';
+import { HealthCheckModule } from '../health-check/health-check.module';
 import { APP_GUARD } from '@nestjs/core';
 
 @Module({
@@ -17,9 +17,10 @@ import { APP_GUARD } from '@nestjs/core';
     LoggerModule.forRoot({
       pinoHttp: {
         name: 'mostlycloudy',
+        enabled: process.env.NODE_ENV !== 'test',
         level: process.env.NODE_ENV !== 'production' ? 'debug' : 'info',
         transport:
-          process.env.NODE_ENV !== 'production'
+          process.env.NODE_ENV === 'development'
             ? { target: 'pino-pretty' }
             : undefined,
       },

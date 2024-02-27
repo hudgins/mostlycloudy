@@ -15,6 +15,11 @@ import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @Get('/')
+  async getRoot(): Promise<string> {
+    return 'Mostlycloudy weather service';
+  }
+
   @Get('v1/current')
   @CacheTTL(5 * 60 * 1000) // 5 mins
   @UseInterceptors(CacheInterceptor)

@@ -1,21 +1,46 @@
 import { Injectable } from '@nestjs/common';
-import { WeatherData, WeatherSource, WeatherService, WeatherUnits } from '../core/weather-data/weather-data.interface';
+import {
+  WeatherData,
+  WeatherSource,
+  WeatherService,
+  WeatherUnits,
+} from '../core/weather-data/weather-data.interface';
 import { WeatherSourcesRegistryService } from '../weather-sources/weather-sources-registry.service';
 
 @Injectable()
 export class AppService {
-  constructor(private readonly weatherSourcesRegistryService: WeatherSourcesRegistryService) {
+  constructor(
+    private readonly weatherSourcesRegistryService: WeatherSourcesRegistryService,
+  ) {}
+
+  async getWeatherForCity(
+    city: string,
+    units: WeatherUnits = WeatherUnits.Metric,
+    source: WeatherSource = WeatherSource.OpenWeatherMap,
+  ): Promise<WeatherData> {
+    return this.weatherSourcesRegistryService
+      .getWeatherService(source)
+      .fetchWeatherForCity(city, units);
   }
 
-  async getWeatherForCity(city: string, units: WeatherUnits = WeatherUnits.Metric, source: WeatherSource = WeatherSource.OpenWeatherMap): Promise<WeatherData> {
-    return this.weatherSourcesRegistryService.getWeatherService(source).fetchWeatherForCity(city, units)
+  async getWeatherForZipCode(
+    zip: string,
+    units: WeatherUnits = WeatherUnits.Metric,
+    source: WeatherSource = WeatherSource.OpenWeatherMap,
+  ): Promise<WeatherData> {
+    return this.weatherSourcesRegistryService
+      .getWeatherService(source)
+      .fetchWeatherForZipCode(zip, units);
   }
 
-  async getWeatherForZipCode(zip: string, units: WeatherUnits = WeatherUnits.Metric, source: WeatherSource = WeatherSource.OpenWeatherMap): Promise<WeatherData> {
-    return this.weatherSourcesRegistryService.getWeatherService(source).fetchWeatherForZipCode(zip, units)
-  }
-
-  async getWeatherForLatLong(latitude: string, longitude: string, units: WeatherUnits = WeatherUnits.Metric, source: WeatherSource = WeatherSource.OpenWeatherMap): Promise<WeatherData> {
-    return this.weatherSourcesRegistryService.getWeatherService(source).fetchWeatherForLatLong(latitude, longitude, units)
+  async getWeatherForLatLong(
+    latitude: string,
+    longitude: string,
+    units: WeatherUnits = WeatherUnits.Metric,
+    source: WeatherSource = WeatherSource.OpenWeatherMap,
+  ): Promise<WeatherData> {
+    return this.weatherSourcesRegistryService
+      .getWeatherService(source)
+      .fetchWeatherForLatLong(latitude, longitude, units);
   }
 }

@@ -1,5 +1,5 @@
 import { Module, RequestMethod } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config'
+import { ConfigModule } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -28,7 +28,7 @@ import { HealthCheckModule } from 'src/health-check/health-check.module';
     MetricsModule,
     CoreModule,
     WeatherSourcesRegistryModule,
-    HealthCheckModule
+    HealthCheckModule,
   ],
   controllers: [AppController],
   providers: [AppService],

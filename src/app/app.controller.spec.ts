@@ -22,30 +22,41 @@ describe('AppController', () => {
 
   describe('weather', () => {
     it('should request weather for Nelson, Canada by city name', async () => {
-      const weather = await appController.getWeather({ city: 'Nelson, Canada' })
-      expect(weather.locationName).toEqual('Nelson')
-    })
+      const weather = await appController.getWeather({
+        city: 'Nelson, Canada',
+      });
+      expect(weather.locationName).toEqual('Nelson');
+    });
 
     it('should request weather for Nelson, Canada by lat long', async () => {
-      const weather = await appController.getWeather({ lat: '49.48885', long: '-117.2855' })
-      expect(weather.locationName).toEqual('Nelson')
-    })
+      const weather = await appController.getWeather({
+        lat: '49.48885',
+        long: '-117.2855',
+      });
+      expect(weather.locationName).toEqual('Nelson');
+    });
 
     it('should request weather for Beverly Hills by zip code', async () => {
-      const weather = await appController.getWeather({ zip: '90210' })
-      expect(weather.locationName).toEqual('Beverly Hills')
-    })
+      const weather = await appController.getWeather({ zip: '90210' });
+      expect(weather.locationName).toEqual('Beverly Hills');
+    });
 
     it('should request weather for Nelson, Canada by city name from openweathermap', async () => {
-      const weather = await appController.getWeather({ city: 'Nelson, Canada', source: WeatherSource.OpenWeatherMap })
-      expect(weather.locationName).toEqual('Nelson')
-      expect(weather.source).toEqual('openweathermap')
-    })
+      const weather = await appController.getWeather({
+        city: 'Nelson, Canada',
+        source: WeatherSource.OpenWeatherMap,
+      });
+      expect(weather.locationName).toEqual('Nelson');
+      expect(weather.source).toEqual('openweathermap');
+    });
 
     it('should request weather for Nelson, Canada by city name from alwayssunny', async () => {
-      const weather = await appController.getWeather({ city: 'Nelson, Canada', source: WeatherSource.AlwaysSunny })
-      expect(weather.locationName).toEqual('Nelson, Canada')
-      expect(weather.source).toEqual('alwayssunny')
-    })
+      const weather = await appController.getWeather({
+        city: 'Nelson, Canada',
+        source: WeatherSource.AlwaysSunny,
+      });
+      expect(weather.locationName).toEqual('Nelson, Canada');
+      expect(weather.source).toEqual('alwayssunny');
+    });
   });
 });

@@ -10,11 +10,17 @@ describe('WeatherSourcesRegistryService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModule.forRoot(), AlwaysSunnyModule, OpenWeatherMapModule],
+      imports: [
+        ConfigModule.forRoot(),
+        AlwaysSunnyModule,
+        OpenWeatherMapModule,
+      ],
       providers: [WeatherSourcesRegistryService],
     }).compile();
 
-    registry = module.get<WeatherSourcesRegistryService>(WeatherSourcesRegistryService);
+    registry = module.get<WeatherSourcesRegistryService>(
+      WeatherSourcesRegistryService,
+    );
   });
 
   it('should be defined', () => {
@@ -22,11 +28,15 @@ describe('WeatherSourcesRegistryService', () => {
   });
 
   it('should return the list of services', () => {
-    const services = registry.getWeatherServices()
-    expect(services.length).toBeGreaterThan(1)
+    const services = registry.getWeatherServices();
+    expect(services.length).toBeGreaterThan(1);
     services.forEach((service) => {
-      expect(service.getName()).toBeDefined()
-      expect(registry.getWeatherService(service.getName() as WeatherSource).getName()).toEqual(service.getName())
-    })
+      expect(service.getName()).toBeDefined();
+      expect(
+        registry
+          .getWeatherService(service.getName() as WeatherSource)
+          .getName(),
+      ).toEqual(service.getName());
+    });
   });
 });

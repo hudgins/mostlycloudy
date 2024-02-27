@@ -5,16 +5,8 @@ import { WeatherSourcesRegistryService } from './weather-sources-registry.servic
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [
-    ConfigModule,
-    OpenWeatherMapModule,
-    AlwaysSunnyModule
-  ],
-  providers: [
-    WeatherSourcesRegistryService
-  ],
-  exports: [
-    WeatherSourcesRegistryService
-  ]
+  imports: [ConfigModule, OpenWeatherMapModule, AlwaysSunnyModule],
+  providers: [WeatherSourcesRegistryService],
+  exports: [WeatherSourcesRegistryService],
 })
 export class WeatherSourcesRegistryModule {}

@@ -4,6 +4,6 @@ import { WeatherSourcesRegistryModule } from 'src/weather-sources/weather-source
 
 @Module({
   imports: [WeatherSourcesRegistryModule],
-  controllers: [HealthCheckController]
+  controllers: [HealthCheckController],
 })
 export class HealthCheckModule {}

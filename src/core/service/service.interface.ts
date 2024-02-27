@@ -1,10 +1,9 @@
 export enum ServiceHealth {
   Normal = 'normal',
-  Degraded = 'degraded'
+  Degraded = 'degraded',
 }
 
 export interface Service {
-  getName(): string
-  getHealth(): Promise<ServiceHealth>
+  getName(): string;
+  getHealth(): Promise<ServiceHealth>;
 }
-

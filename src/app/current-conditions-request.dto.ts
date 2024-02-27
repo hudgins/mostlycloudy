@@ -1,27 +1,35 @@
-import { IsEnum, IsNumberString, IsOptional, IsPostalCode } from "class-validator"
-import { WeatherSource, WeatherUnits } from "../core/weather-data/weather-data.interface"
+import {
+  IsEnum,
+  IsNumberString,
+  IsOptional,
+  IsPostalCode,
+} from 'class-validator';
+import {
+  WeatherSource,
+  WeatherUnits,
+} from '../core/weather-data/weather-data.interface';
 
 export class CurrentConditionsRequestDto {
   @IsOptional()
-  city?: string
+  city?: string;
 
   @IsOptional()
-  @IsPostalCode("US")
-  zip?: string
+  @IsPostalCode('US')
+  zip?: string;
 
   @IsOptional()
   @IsNumberString()
-  lat?: string
+  lat?: string;
 
   @IsNumberString()
   @IsOptional()
-  long?: string
+  long?: string;
 
   @IsOptional()
   @IsEnum(WeatherUnits)
-  units?: WeatherUnits
+  units?: WeatherUnits;
 
   @IsOptional()
   @IsEnum(WeatherSource)
-  source?: WeatherSource
+  source?: WeatherSource;
 }

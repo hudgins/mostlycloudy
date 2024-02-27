@@ -5,6 +5,6 @@ import { MetricsModule } from '../../metrics/metrics.module';
 @Module({
   imports: [MetricsModule],
   providers: [AlwaysSunnyService],
-  exports: [AlwaysSunnyService]
+  exports: [AlwaysSunnyService],
 })
 export class AlwaysSunnyModule {}

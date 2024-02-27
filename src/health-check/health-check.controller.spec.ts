@@ -20,16 +20,16 @@ describe('HealthCheckController', () => {
   });
 
   it('should return "up" from basic health check route', () => {
-    expect(controller.getBasicHealth()).toEqual('up')
-  })
+    expect(controller.getBasicHealth()).toEqual('up');
+  });
 
   it('should return status for each weather source', async () => {
-    const statuses = await controller.getDetailedHealth()
-    expect(statuses).toHaveProperty('status')
-    expect(statuses).toHaveProperty('sources')
-    expect(statuses.sources).toHaveProperty('alwayssunny')
-    expect(statuses.sources).toHaveProperty('openweathermap')
-    expect(statuses.sources.alwayssunny.status).toEqual('normal')
-    expect(statuses.sources.openweathermap.status).toEqual('normal')
-  })
+    const statuses = await controller.getDetailedHealth();
+    expect(statuses).toHaveProperty('status');
+    expect(statuses).toHaveProperty('sources');
+    expect(statuses.sources).toHaveProperty('alwayssunny');
+    expect(statuses.sources).toHaveProperty('openweathermap');
+    expect(statuses.sources.alwayssunny.status).toEqual('normal');
+    expect(statuses.sources.openweathermap.status).toEqual('normal');
+  });
 });

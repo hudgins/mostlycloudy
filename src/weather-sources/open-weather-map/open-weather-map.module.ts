@@ -6,6 +6,6 @@ import { MetricsModule } from '../../metrics/metrics.module';
 @Module({
   imports: [ConfigModule, MetricsModule],
   providers: [OpenWeatherMapService],
-  exports: [OpenWeatherMapService]
+  exports: [OpenWeatherMapService],
 })
 export class OpenWeatherMapModule {}

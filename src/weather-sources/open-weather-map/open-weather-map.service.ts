@@ -1,90 +1,133 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
 
-import axios from 'axios'
+import axios from 'axios';
 import { MetricsService } from '../../metrics/metrics.service';
-import { WeatherData, WeatherService, WeatherSource, WeatherUnits } from '../../core/weather-data/weather-data.interface';
+import {
+  WeatherData,
+  WeatherService,
+  WeatherSource,
+  WeatherUnits,
+} from '../../core/weather-data/weather-data.interface';
 import { ServiceHealth } from '../../core/service/service.interface';
 
-const OPEN_WEATHER_MAP_API = 'https://api.openweathermap.org/data/2.5'
+const OPEN_WEATHER_MAP_API = 'https://api.openweathermap.org/data/2.5';
 
-type OpenWeatherData = any
+type OpenWeatherData = any;
 type OpenWeatherMapRequestParams = {
-  q?: string
-  zip?: string
-  lat?: string
-  lon?: string
-  units: WeatherUnits
-}
+  q?: string;
+  zip?: string;
+  lat?: string;
+  lon?: string;
+  units: WeatherUnits;
+};
 
 @Injectable()
 export class OpenWeatherMapService implements WeatherService {
-  private readonly apiKey: string
-  private readonly logger = new Logger(OpenWeatherMapService.name)
+  private readonly apiKey: string;
+  private readonly logger = new Logger(OpenWeatherMapService.name);
 
-  constructor(private configService: ConfigService, private readonly metricsService: MetricsService) {
-    this.apiKey = configService.get<string>('API_KEY')
-    if (!this.apiKey) throw new Error('missing required API_KEY variable in environment')
+  constructor(
+    private configService: ConfigService,
+    private readonly metricsService: MetricsService,
+  ) {
+    this.apiKey = configService.get<string>('API_KEY');
+    if (!this.apiKey)
+      throw new Error('missing required API_KEY variable in environment');
   }
 
   getName(): WeatherSource.OpenWeatherMap {
-    return WeatherSource.OpenWeatherMap
+    return WeatherSource.OpenWeatherMap;
   }
 
   async getHealth(): Promise<ServiceHealth> {
-    const result = await this.fetchWeather({ q: 'Nelson, CA', units: WeatherUnits.Metric })
-    if (result.locationName === 'Nelson') return ServiceHealth.Normal
-    return ServiceHealth.Degraded
+    const result = await this.fetchWeather({
+      q: 'Nelson, CA',
+      units: WeatherUnits.Metric,
+    });
+    if (result.locationName === 'Nelson') return ServiceHealth.Normal;
+    return ServiceHealth.Degraded;
   }
 
-  async fetchWeatherForCity(city: string, units: WeatherUnits = WeatherUnits.Metric): Promise<WeatherData> {
-    return this.fetchWeather({ q: city, units })
+  async fetchWeatherForCity(
+    city: string,
+    units: WeatherUnits = WeatherUnits.Metric,
+  ): Promise<WeatherData> {
+    return this.fetchWeather({ q: city, units });
   }
 
-  async fetchWeatherForZipCode(zipCode: string, units: WeatherUnits = WeatherUnits.Metric): Promise<WeatherData> {
-    return this.fetchWeather({ zip: zipCode, units })
+  async fetchWeatherForZipCode(
+    zipCode: string,
+    units: WeatherUnits = WeatherUnits.Metric,
+  ): Promise<WeatherData> {
+    return this.fetchWeather({ zip: zipCode, units });
   }
 
-  async fetchWeatherForLatLong(latitude: string, longitude: string, units: WeatherUnits = WeatherUnits.Metric): Promise<WeatherData> {
-    return this.fetchWeather({ lat: latitude, lon: longitude, units })
+  async fetchWeatherForLatLong(
+    latitude: string,
+    longitude: string,
+    units: WeatherUnits = WeatherUnits.Metric,
+  ): Promise<WeatherData> {
+    return this.fetchWeather({ lat: latitude, lon: longitude, units });
   }
 
-  private async fetchWeather(params: OpenWeatherMapRequestParams): Promise<WeatherData> {
+  private async fetchWeather(
+    params: OpenWeatherMapRequestParams,
+  ): Promise<WeatherData> {
     try {
-      this.logger.log('weather request:' + JSON.stringify(params))
-      const weatherData = await this.makeRequest(params)
-      this.metricsService.incrementMetric('weather.openweathermap.api.requests')
+      this.logger.log('weather request:' + JSON.stringify(params));
+      const weatherData = await this.makeRequest(params);
+      this.metricsService.incrementMetric(
+        'weather.openweathermap.api.requests',
+      );
       if (!weatherData?.weather) {
-        this.logger.error('unexpected response from OpenWeatherMap', weatherData)
-        throw new Error('unexpected response from weather source')
+        this.logger.error(
+          'unexpected response from OpenWeatherMap',
+          weatherData,
+        );
+        throw new Error('unexpected response from weather source');
       }
-      return this.standardizeWeatherData(weatherData, params.units)
+      return this.standardizeWeatherData(weatherData, params.units);
     } catch (err) {
-      this.metricsService.incrementMetric('weather.openweathermap.api.failures')
-      this.logger.error(`failed to fetch weather data: ${err.message}`)
-      throw err
+      this.metricsService.incrementMetric(
+        'weather.openweathermap.api.failures',
+      );
+      this.logger.error(`failed to fetch weather data: ${err.message}`);
+      throw err;
     }
   }
 
   private async makeRequest(params: OpenWeatherMapRequestParams) {
-    const searchParams = new URLSearchParams({ appid: this.apiKey, ...params })
-    const url = `${OPEN_WEATHER_MAP_API}/weather?${searchParams.toString()}`
-    this.logger.log('request: ' + url)
+    const searchParams = new URLSearchParams({ appid: this.apiKey, ...params });
+    const url = `${OPEN_WEATHER_MAP_API}/weather?${searchParams.toString()}`;
+    this.logger.log('request: ' + url);
     try {
-      const response = await axios.get(url)
-      return response.data
+      const response = await axios.get(url);
+      return response.data;
     } catch (err) {
-      if (err.response?.status === 400) throw new BadRequestException('invalid request')
-      if (err.response?.status === 404) throw new NotFoundException('weather data not found')
-      throw err
+      if (err.response?.status === 400)
+        throw new BadRequestException('invalid request');
+      if (err.response?.status === 404)
+        throw new NotFoundException('weather data not found');
+      throw err;
     }
   }
 
-  private standardizeWeatherData(openWeatherData: OpenWeatherData, units: WeatherUnits): WeatherData {
+  private standardizeWeatherData(
+    openWeatherData: OpenWeatherData,
+    units: WeatherUnits,
+  ): WeatherData {
     return {
       locationName: openWeatherData.name,
-      locationCoords: { lat: openWeatherData.coord.lat, long: openWeatherData.coord.lon },
+      locationCoords: {
+        lat: openWeatherData.coord.lat,
+        long: openWeatherData.coord.lon,
+      },
       weatherDescription: openWeatherData.weather[0].description,
       temperatureCurrent: openWeatherData.main.temp,
       temperatureLow: openWeatherData.main.temp_min,
@@ -93,8 +136,8 @@ export class OpenWeatherMapService implements WeatherService {
       windDirection: openWeatherData.wind.deg,
       humidity: openWeatherData.main.humidity,
       units,
-      source: WeatherSource.OpenWeatherMap
-    }
+      source: WeatherSource.OpenWeatherMap,
+    };
   }
 }
 
@@ -142,4 +185,3 @@ export class OpenWeatherMapService implements WeatherService {
    "cod":200
   }
   */
-

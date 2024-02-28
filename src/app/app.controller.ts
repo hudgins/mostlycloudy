@@ -7,9 +7,13 @@ import {
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { AppService } from './app.service';
-import { WeatherData } from '../core/weather-data/weather-data.interface';
+import {
+  WeatherData,
+  WeatherDataEntity,
+} from '../core/weather-data/weather-data.interface';
 import { CurrentConditionsRequestDto } from './current-conditions-request.dto';
 import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller()
 export class AppController {
@@ -21,6 +25,12 @@ export class AppController {
   }
 
   @Get('v1/current')
+  @ApiOperation({ summary: 'Get Current Weather Conditions' })
+  @ApiResponse({
+    status: 200,
+    description: 'Current Weather Conditions',
+    type: WeatherDataEntity,
+  })
   @CacheTTL(5 * 60 * 1000) // 5 mins
   @UseInterceptors(CacheInterceptor)
   @Throttle({ default: { limit: 30, ttl: 60000 } })

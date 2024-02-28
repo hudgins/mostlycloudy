@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import {
   WeatherData,
   WeatherSource,
-  WeatherService,
   WeatherUnits,
 } from '../core/weather-data/weather-data.interface';
 import { WeatherSourcesRegistryService } from '../weather-sources/weather-sources-registry.service';

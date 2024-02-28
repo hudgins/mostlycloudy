@@ -1,3 +1,5 @@
+# Mostly Cloudy Weather Service 🌥️
+
 ## Description
 
 This project is a solution to a take-home job application assessment. The problem was presented as follows:
@@ -30,7 +32,7 @@ load balancers or uptime monitors, the other for detailed status of the service 
 6. **Metrics** -- a basic in-memory metrics service is included, which services use to
 report their usage.
 
-### Implementation Details
+## Implementation Details
 
 - caching, rate-limiting, and metrics all use in-memory storage for the purpose of this exercise so as to not require other dependencies (eg. Redis).
 - prefers @nestjs modules whenever possible:
@@ -42,11 +44,29 @@ report their usage.
 - [axios](https://axios-http.com) for http requests
 - [lint-staged](https://github.com/lint-staged/lint-staged#readme) to lint and format staged changes on pre-commit hook
 - [commitlint](https://commitlint.js.org) to enforce a common commit message format (future use with [release-please](https://github.com/googleapis/release-please#readme))
+- [nock](https://github.com/nock/nock#readme) to mock network traffic and eliminate outbound http calls and the need for a functioning API key for unit tests
 
 ## Installation
 
 ```bash
 $ npm install
+```
+
+## Configuration
+
+A free OpenWeatherMap API key is needed for any functionality that uses that API. Note that the
+unit tests (`npm run test`) and the mock 'alwayssunny' weather source work without this API key,
+but a dummy one must exist in the environment.
+
+To create a dummy key:
+
+```bash
+  echo 'API_KEY=dummy' > .env
+```
+or get one from openweathermap.org and copy it to the clipboard (macOS):
+
+```bash
+  echo "API_KEY=`pbpaste`" > .env
 ```
 
 ## Running the app
@@ -137,7 +157,7 @@ $ curl 'http://localhost:3000/v1/current?zip=90210&source=openweathermap'
 # unit tests
 $ npm run test
 
-# e2e tests
+# e2e tests -- require a valid API_KEY to be in the environment
 $ npm run test:e2e
 
 # test coverage

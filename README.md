@@ -39,6 +39,7 @@ report their usage.
   - caching - @nestjs/cache-manager
   - rate-limiting - @nestjs/throttler
   - config - @nestjs/config
+  - API docs - @nestjs/swagger
 - [class-validator](https://github.com/typestack/class-validator#readme) for request validation
 - [pino](https://getpino.io) for logging
 - [axios](https://axios-http.com) for http requests
@@ -83,6 +84,13 @@ $ npm run start:prod
 ```
 
 ## Using the APIs
+
+### API Docs/Playground
+
+A Swagger-based API documentation and testing interface is served by the running application.
+If running on the default port, you can find it here: [API Docs](http://localhost:3000/api#/default/AppController_getWeather)
+
+### Commandline usage via curl
 
 - Query by lat/long
 ```bash
@@ -149,7 +157,6 @@ $ curl 'http://localhost:3000/v1/current?zip=90210&source=openweathermap'
   "source": "openweathermap"
 }
 ```
-
 
 ## Test
 

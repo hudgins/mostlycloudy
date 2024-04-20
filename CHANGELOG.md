@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/hudgins/mostlycloudy/compare/v1.0.1...v1.0.2) (2024-04-20)
+
+
+### Bug Fixes
+
+* removes exclamation point in weather report ([876f778](https://github.com/hudgins/mostlycloudy/commit/876f778977d32d7ce960723a2c545bb7a6572840))
+
 ## [1.0.1](https://github.com/hudgins/mostlycloudy/compare/v1.0.0...v1.0.1) (2024-04-20)
 
 

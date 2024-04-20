@@ -25,5 +25,3 @@
 * configures release-please to update version in source ([88f1412](https://github.com/hudgins/mostlycloudy/commit/88f14121531fb76eeca52dd217f37dfec694a829))
 * fixes lint-staged and bug ignored by it ([ac40f3c](https://github.com/hudgins/mostlycloudy/commit/ac40f3cdde9ec92a184f9a0f5b0b6542ae1f153a))
 * restores pretty logging in dev/local mode ([25ed6d9](https://github.com/hudgins/mostlycloudy/commit/25ed6d979aea78d7721ea207f453d3304b0da62f))
-
-## Changelog

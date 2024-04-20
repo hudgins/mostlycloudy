@@ -54,7 +54,7 @@ export class AlwaysSunnyService implements WeatherService {
         lat: params.latitude || 49.4999,
         long: params.longitude || -117.2855,
       },
-      weatherDescription: 'Sunny!',
+      weatherDescription: 'Sunny.',
       temperatureCurrent: this.convertTemp(27, params.units),
       temperatureLow: this.convertTemp(11, params.units),
       temperatureHigh: this.convertTemp(32, params.units),

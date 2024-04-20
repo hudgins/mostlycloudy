@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/hudgins/mostlycloudy/compare/v1.0.0...v1.0.1) (2024-04-20)
+
+
+### Bug Fixes
+
+* removes extra changelog header in CHANGELOG.md ([1119565](https://github.com/hudgins/mostlycloudy/commit/111956583e76dcbf1435df70678d25fdc5742ee6))
+
 ## 1.0.0 (2024-04-20)
 
 

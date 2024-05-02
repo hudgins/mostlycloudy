@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/hudgins/mostlycloudy/compare/v1.0.2...v1.1.0) (2024-04-20)
+
+
+### Features
+
+* increases alwayssunny temperature by 1 degree ([885dc39](https://github.com/hudgins/mostlycloudy/commit/885dc39064d2c7d14c77aaff44bec7042ceaeac8))
+
+
+### Bug Fixes
+
+* reverts removal of exclamation point in alwayssunny data ([93e4cb8](https://github.com/hudgins/mostlycloudy/commit/93e4cb8b2e621aaf6190b7cc3acc40568d2551f7))
+
 ## [1.0.2](https://github.com/hudgins/mostlycloudy/compare/v1.0.1...v1.0.2) (2024-04-20)
 
 

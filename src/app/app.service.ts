@@ -14,8 +14,8 @@ export class AppService {
 
   async getWeatherForCity(
     city: string,
-    units: WeatherUnits = WeatherUnits.Metric,
-    source: WeatherSource = WeatherSource.OpenWeatherMap,
+    units: WeatherUnits = 'metric',
+    source: WeatherSource = 'openweathermap',
   ): Promise<WeatherData> {
     return this.weatherSourcesRegistryService
       .getWeatherService(source)
@@ -24,8 +24,8 @@ export class AppService {
 
   async getWeatherForZipCode(
     zip: string,
-    units: WeatherUnits = WeatherUnits.Metric,
-    source: WeatherSource = WeatherSource.OpenWeatherMap,
+    units: WeatherUnits = 'metric',
+    source: WeatherSource = 'openweathermap',
   ): Promise<WeatherData> {
     return this.weatherSourcesRegistryService
       .getWeatherService(source)
@@ -35,8 +35,8 @@ export class AppService {
   async getWeatherForLatLong(
     latitude: string,
     longitude: string,
-    units: WeatherUnits = WeatherUnits.Metric,
-    source: WeatherSource = WeatherSource.OpenWeatherMap,
+    units: WeatherUnits = 'metric',
+    source: WeatherSource = 'openweathermap',
   ): Promise<WeatherData> {
     return this.weatherSourcesRegistryService
       .getWeatherService(source)

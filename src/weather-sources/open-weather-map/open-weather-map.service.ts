@@ -41,29 +41,29 @@ export class OpenWeatherMapService implements WeatherService {
       throw new Error('missing required API_KEY variable in environment');
   }
 
-  getName(): WeatherSource.OpenWeatherMap {
-    return WeatherSource.OpenWeatherMap;
+  getName(): WeatherSource {
+    return 'openweathermap';
   }
 
   async getHealth(): Promise<ServiceHealth> {
     const result = await this.fetchWeather({
       q: 'Nelson, CA',
-      units: WeatherUnits.Metric,
+      units: 'metric',
     });
-    if (result.locationName === 'Nelson') return ServiceHealth.Normal;
-    return ServiceHealth.Degraded;
+    if (result.locationName === 'Nelson') return 'normal';
+    return 'degraded';
   }
 
   async fetchWeatherForCity(
     city: string,
-    units: WeatherUnits = WeatherUnits.Metric,
+    units: WeatherUnits = 'metric',
   ): Promise<WeatherData> {
     return this.fetchWeather({ q: city, units });
   }
 
   async fetchWeatherForZipCode(
     zipCode: string,
-    units: WeatherUnits = WeatherUnits.Metric,
+    units: WeatherUnits = 'metric',
   ): Promise<WeatherData> {
     return this.fetchWeather({ zip: zipCode, units });
   }
@@ -71,7 +71,7 @@ export class OpenWeatherMapService implements WeatherService {
   async fetchWeatherForLatLong(
     latitude: string,
     longitude: string,
-    units: WeatherUnits = WeatherUnits.Metric,
+    units: WeatherUnits = 'metric',
   ): Promise<WeatherData> {
     return this.fetchWeather({ lat: latitude, lon: longitude, units });
   }
@@ -136,7 +136,7 @@ export class OpenWeatherMapService implements WeatherService {
       windDirection: openWeatherData.wind.deg,
       humidity: openWeatherData.main.humidity,
       units,
-      source: WeatherSource.OpenWeatherMap,
+      source: 'openweathermap',
     };
   }
 }

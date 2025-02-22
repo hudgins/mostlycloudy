@@ -48,13 +48,14 @@ export class HealthCheckController {
   })
   async getDetailedHealth(): Promise<DetailedHealthResponse> {
     const services = this.weatherSourcesRegistryService.getWeatherServices();
-    const health = { status: ServiceHealth.Normal, sources: {} };
+    const health: DetailedHealthResponse = { status: 'normal', sources: {} };
     for (let i = 0; i < services.length; i++) {
       const service = services[i];
       const status = await service.getHealth();
       health.sources[service.getName()] = { status };
-      if (status !== ServiceHealth.Normal.toString())
-        health.status = status as ServiceHealth;
+      if (status !== 'normal') {
+        health.status = status;
+      }
     }
     return health;
   }

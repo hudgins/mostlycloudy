@@ -16,24 +16,24 @@ export class AlwaysSunnyService implements WeatherService {
 
   constructor(private readonly metricsService: MetricsService) {}
 
-  getName(): WeatherSource.AlwaysSunny {
-    return WeatherSource.AlwaysSunny;
+  getName(): WeatherSource {
+    return 'alwayssunny';
   }
 
   getHealth(): Promise<ServiceHealth> {
-    return Promise.resolve(ServiceHealth.Normal);
+    return Promise.resolve('normal');
   }
 
   async fetchWeatherForCity(
     city: string,
-    units: WeatherUnits = WeatherUnits.Metric,
+    units: WeatherUnits = 'metric',
   ): Promise<WeatherData> {
     return this.fetchWeather({ city, units });
   }
 
   async fetchWeatherForZipCode(
     zipCode: string,
-    units: WeatherUnits = WeatherUnits.Metric,
+    units: WeatherUnits = 'metric',
   ): Promise<WeatherData> {
     return this.fetchWeather({ zipCode, units });
   }
@@ -41,7 +41,7 @@ export class AlwaysSunnyService implements WeatherService {
   async fetchWeatherForLatLong(
     latitude: string,
     longitude: string,
-    units: WeatherUnits = WeatherUnits.Metric,
+    units: WeatherUnits = 'metric',
   ): Promise<WeatherData> {
     return this.fetchWeather({ latitude, longitude, units });
   }
@@ -62,23 +62,17 @@ export class AlwaysSunnyService implements WeatherService {
       windDirection: 180,
       humidity: 40,
       units: params.units,
-      source: WeatherSource.AlwaysSunny,
+      source: 'alwayssunny',
     };
   }
 
-  private convertTemp(
-    temp: number,
-    units: WeatherUnits = WeatherUnits.Metric,
-  ): number {
+  private convertTemp(temp: number, units: WeatherUnits = 'metric'): number {
     if (units == 'imperial') return (9 / 5) * temp + 32;
     if (units == 'standard') return temp + 273.15;
     return temp;
   }
 
-  private convertSpeed(
-    speed: number,
-    units: WeatherUnits = WeatherUnits.Metric,
-  ): number {
+  private convertSpeed(speed: number, units: WeatherUnits = 'metric'): number {
     if (units == 'imperial') return speed * 0.621371;
     return speed;
   }

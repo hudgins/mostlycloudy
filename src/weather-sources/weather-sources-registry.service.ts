@@ -16,11 +16,8 @@ export class WeatherSourcesRegistryService {
     openWeatherMapService: OpenWeatherMapService,
     alwaysSunnyService: AlwaysSunnyService,
   ) {
-    this.weatherServices.set(
-      WeatherSource.OpenWeatherMap,
-      openWeatherMapService,
-    );
-    this.weatherServices.set(WeatherSource.AlwaysSunny, alwaysSunnyService);
+    this.weatherServices.set('openweathermap', openWeatherMapService);
+    this.weatherServices.set('alwayssunny', alwaysSunnyService);
   }
 
   getWeatherServices(): readonly WeatherService[] {

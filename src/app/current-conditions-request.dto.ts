@@ -6,7 +6,9 @@ import {
 } from 'class-validator';
 import {
   WeatherSource,
+  WeatherSourceValues,
   WeatherUnits,
+  WeatherUnitsValues,
 } from '../core/weather-data/weather-data.interface';
 
 export class CurrentConditionsRequestDto {
@@ -26,10 +28,10 @@ export class CurrentConditionsRequestDto {
   long?: string;
 
   @IsOptional()
-  @IsEnum(WeatherUnits)
+  @IsEnum(WeatherUnitsValues)
   units?: WeatherUnits;
 
   @IsOptional()
-  @IsEnum(WeatherSource)
+  @IsEnum(WeatherSourceValues)
   source?: WeatherSource;
 }

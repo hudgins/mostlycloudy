@@ -4,7 +4,6 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { WeatherSource } from '../core/weather-data/weather-data.interface';
 import { WeatherSourcesRegistryModule } from '../weather-sources/weather-sources-registry.module';
 import { mockWeatherHttpRequest } from '../../test/utils/openweathermap';
 
@@ -58,7 +57,7 @@ describe('AppController', () => {
 
       const weather = await appController.getWeather({
         city: 'Nelson, Canada',
-        source: WeatherSource.OpenWeatherMap,
+        source: 'openweathermap',
       });
       expect(weather.locationName).toEqual('Nelson');
       expect(weather.source).toEqual('openweathermap');
@@ -69,7 +68,7 @@ describe('AppController', () => {
 
       const weather = await appController.getWeather({
         city: 'Nelson, Canada',
-        source: WeatherSource.AlwaysSunny,
+        source: 'alwayssunny',
       });
       expect(weather.locationName).toEqual('Nelson, Canada');
       expect(weather.source).toEqual('alwayssunny');

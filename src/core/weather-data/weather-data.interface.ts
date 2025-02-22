@@ -1,7 +1,7 @@
 import { Service } from '../service/service.interface';
 import { ApiProperty } from '@nestjs/swagger';
 
-export interface WeatherData {
+export type WeatherData = {
   locationCoords: { lat: number; long: number };
   locationName: string;
   weatherDescription: string;
@@ -13,7 +13,7 @@ export interface WeatherData {
   windDirection: number;
   units: WeatherUnits;
   source: WeatherSource;
-}
+};
 
 export class WeatherDataEntity implements WeatherData {
   @ApiProperty({
@@ -83,15 +83,22 @@ export class WeatherDataEntity implements WeatherData {
   source: WeatherSource;
 }
 
-export enum WeatherSource {
-  OpenWeatherMap = 'openweathermap',
-  AlwaysSunny = 'alwayssunny',
-}
-export enum WeatherUnits {
-  Standard = 'standard',
-  Metric = 'metric',
-  Imperial = 'imperial',
-}
+const WeatherSourceEnum = {
+  OpenWeatherMap: 'openweathermap',
+  AlwaysSunny: 'alwayssunny',
+} as const;
+export type WeatherSource =
+  (typeof WeatherSourceEnum)[keyof typeof WeatherSourceEnum];
+export const WeatherSourceValues = Object.values(WeatherSourceEnum);
+
+const WeatherUnitsEnum = {
+  Standard: 'standard',
+  Metric: 'metric',
+  Imperial: 'imperial',
+} as const;
+export type WeatherUnits =
+  (typeof WeatherUnitsEnum)[keyof typeof WeatherUnitsEnum];
+export const WeatherUnitsValues = Object.values(WeatherUnitsEnum);
 
 export interface WeatherService extends Service {
   fetchWeatherForCity(city: string, units: WeatherUnits): Promise<WeatherData>;
